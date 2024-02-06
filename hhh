@@ -1,0 +1,238 @@
+<div class="rounded-box results-box" id="results">
+<div id="results-test"></div>
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-8">
+        <div class="big">
+            Puedes ahorrar<br>
+            <span class="big bold blue"><span class="big">13.730,62 €</span></span><br>
+            ahorro 100,00 € mensual durante 10 años
+        </div>
+        <div class="divider v-offset-4"></div>
+        <div class="row v-offset-3">
+            <div class="col-xs-8 col-lg-5">
+                <span class="color-swatch initial-balance"></span><span class="swatch-aligned">Balance
+                    Inicial:</span>
+            </div>
+            <div class="col-xs-4 col-lg-7">
+                1.000,00 €
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-8 col-lg-5">
+                <span class="color-swatch periodic-deposits"></span><span
+                    class="swatch-aligned">Depósito
+                    Periódicos:</span>
+            </div>
+            <div class="col-xs-4 col-lg-7">
+                12.000,00 €
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-8 col-lg-5">
+                <span class="color-swatch interest"></span><span class="swatch-aligned">Interés
+                    total:</span>
+            </div>
+            <div class="col-xs-4 col-lg-7">
+                730,62 €
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-5 col-md-4">
+        <div class="small-pie-chart-container">
+            <canvas id="value-split-chart"></canvas>
+        </div>
+        <div class="v-offset-3 visible-xs"></div>
+    </div>
+</div>
+<div class="bar-chart-container">
+    <canvas id="growth-chart"></canvas>
+</div>
+<div id="amortization"></div>
+<script nonce="12VbAnSVtDU/IxFFXg8D9A==">
+    //<![CDATA[
+
+    jQuery(function () {
+        $('#fv-initial-balance').val('1000.00');
+        $('#nper-initial-balance').val('1000.00');
+        $('#pmt-initial-balance').val('1000.00');
+        $('#rate-initial-balance').val('1000.00');
+
+        $('#fv-deposit-frequency').val('12');
+        $('#nper-deposit-frequency').val('12');
+        $('#pmt-deposit-frequency').val('12');
+        $('#rate-deposit-frequency').val('12');
+
+        $('#fv-deposit-timing').val('1');
+        $('#nper-deposit-timing').val('1');
+        $('#pmt-deposit-timing').val('1');
+        $('#rate-deposit-timing').val('1');
+
+
+        if (!$('#solve-rate-fields').is(':visible')) {
+            $('#fv-interest-rate').val('1.000');
+            $('#nper-interest-rate').val('1.000');
+            $('#pmt-interest-rate').val('1.000');
+        }
+
+        if (!$('#solve-pmt-fields').is(':visible')) {
+            $('#fv-periodic-deposit').val('100.00');
+            $('#nper-periodic-deposit').val('100.00');
+            $('#rate-periodic-deposit').val('100.00');
+        }
+
+        if (!$('#solve-nper-fields').is(':visible')) {
+            $('#fv-term').val('10');
+            $('#pmt-term').val('10');
+            $('#rate-term').val('10');
+        }
+
+        if (!$('#solve-fv-fields').is(':visible')) {
+            $('#nper-goal').val('10000.00');
+            $('#pmt-goal').val('10000.00');
+            $('#rate-goal').val('10000.00');
+        }
+
+        if ($('#value-split-chart').is(':visible')) {
+            var pc_initial_balance_color = typeof window.pie_chart_initial_balance_color !== 'undefined' ? window.pie_chart_initial_balance_color : '#428bca';
+            var pc_periodic_deposits_color = typeof window.pie_chart_periodic_deposits_color !== 'undefined' ? window.pie_chart_periodic_deposits_color : '#9ECAE1';
+            var pc_interest_color = typeof window.pie_chart_interest_color !== 'undefined' ? window.pie_chart_interest_color : '#979797';
+            var data = {
+                datasets: [{
+                    data: [
+                        1000.0,
+                        12000.0,
+                        730.62
+                    ],
+                    backgroundColor: [
+                        pc_initial_balance_color,
+                        pc_periodic_deposits_color,
+                        pc_interest_color
+                    ]
+                }],
+                labels: [
+                    'Balance Inicial',
+                    'Depósito Periódicos',
+                    'Interés'
+                ]
+            };
+            draw_pie_chart(data);
+        }
+
+        var amortizationData = [{
+            "year": 1,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 2200.0,
+            "total_interest": 16.57,
+            "balance": 2216.57
+        },
+        {
+            "year": 2,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 3400.0,
+            "total_interest": 45.35,
+            "balance": 3445.35
+        },
+        {
+            "year": 3,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 4600.0,
+            "total_interest": 86.49,
+            "balance": 4686.49
+        },
+        {
+            "year": 4,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 5800.0,
+            "total_interest": 140.09,
+            "balance": 5940.09
+        },
+        {
+            "year": 5,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 7000.0,
+            "total_interest": 206.28,
+            "balance": 7206.28
+        },
+        {
+            "year": 6,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 8200.0,
+            "total_interest": 285.19,
+            "balance": 8485.19
+        },
+        {
+            "year": 7,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 9400.0,
+            "total_interest": 376.95,
+            "balance": 9776.95
+        },
+        {
+            "year": 8,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 10600.0,
+            "total_interest": 481.69,
+            "balance": 11081.69
+        },
+        {
+            "year": 9,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 11800.0,
+            "total_interest": 599.54,
+            "balance": 12399.54
+        },
+        {
+            "year": 10,
+            "initial_balance": 1000.0,
+            "periodic_deposits": 1200.0,
+            "total_deposits": 13000.0,
+            "total_interest": 730.62,
+            "balance": 13730.62
+        }
+        ];
+
+        if ($('#growth-chart').is(':visible')) {
+            draw_bar_chart(amortizationData);
+
+            draw_amortization_table('amortization', [{
+                'title': 'Año',
+                'data_key': 'year'
+            },
+            {
+                'title': 'Depósito Periódicos',
+                'data_key': 'periodic_deposits',
+                'format': 1
+            },
+            {
+                'title': 'Depósitos totales',
+                'data_key': 'total_deposits',
+                'format': 1
+            },
+            {
+                'title': 'Interés total',
+                'data_key': 'total_interest',
+                'format': 1
+            },
+            {
+                'title': 'Balance',
+                'data_key': 'balance',
+                'format': 1
+            }
+            ], amortizationData, {});
+
+        }
+
+    });
+
+    //]]>
+</script>
+</div>

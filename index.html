@@ -1,287 +1,892 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
+    <style type="text/css" id="custom-styles" nonce="12VbAnSVtDU/IxFFXg8D9A==">
+        .modal a,
+        .modal a:hover {
+            color: #428bca !important;
+        }
+
+        .rounded-box.input-box,
+        .input-box {
+            background-color: #f8fff8;
+            border-color: #d0e2d0;
+        }
+
+        .rounded-box.input-box,
+        .input-box,
+        .text-color,
+        .input-group-addon,
+        .input-group-addon a,
+        .input-group-addon a span {
+            color: #333333;
+        }
+
+        .btn {
+            background-color: #5cb85c;
+            color: #ffffff;
+        }
+
+        .btn:hover {
+            background-color: #5cb85c;
+            color: #ffffff;
+        }
+
+        .input-group-addon {
+            background-color: #ededed;
+        }
+
+        .rounded-box.results-box {
+            background-color: #fbfbfb;
+            border-color: #efefef;
+            color: #333333;
+        }
+
+        .data-wrapper,
+        .data-wrapper .content .bottom-border {
+            border-color: #efefef;
+        }
+
+        .data-wrapper.heading {
+            background-color: transparent;
+            color: transparent;
+        }
+
+        .bar-chart-container,
+        .chart-group .collapsable-chart-wrapper {
+            border-color: #efefef;
+        }
+
+        a,
+        a:hover {
+            color: #333333 !important;
+        }
+
+        .table-striped>tbody>tr:nth-child(odd)>td,
+        .table-striped>tbody>tr:nth-child(odd)>th {
+            background-color: #f9f9f9;
+        }
+
+        .nav-tabs {
+            border-bottom-color: #5cb85c;
+        }
+
+        .nav-tabs>li>a {
+            background-color: #b1c2b1;
+            color: #2b4d2b !important;
+            border-bottom-color: #5cb85c;
+        }
+
+        .nav-tabs>li.active>a,
+        .nav-tabs>li.active>a:focus {
+            color: #ffffff !important;
+            background-color: #5cb85c;
+            border-color: #5cb85c;
+            border-bottom-color: transparent;
+        }
+
+        .nav-tabs>li>a:hover,
+        .nav-tabs>li.active>a:hover {
+            color: #5cb85c !important;
+            background-color: #ffffff !important;
+        }
+
+        .nav-tabs>li>a:hover {
+            border-bottom-color: #5cb85c;
+        }
+
+        .nav-tabs>li.active>a:hover {
+            border-color: #5cb85c;
+            border-bottom-color: transparent;
+        }
+
+        .color-swatch.initial-investment {
+            background: transparent;
+        }
+
+        .color-swatch.regular-investment {
+            background: transparent;
+        }
+
+        .color-swatch.interest {
+            background: #29cc70;
+        }
+
+        .color-swatch.principal {
+            background: transparent;
+        }
+
+        .color-swatch.present-value {
+            background: transparent;
+        }
+
+        .color-swatch.total-interest {
+            background: transparent;
+        }
+
+        .color-swatch.initial-balance {
+            background: #c257e0;
+        }
+
+        .color-swatch.periodic-deposits {
+            background: #4850e0;
+        }
+
+        .color-swatch.color-1 {
+            background: transparent;
+        }
+
+        .color-swatch.color-2 {
+            background: transparent;
+        }
+
+        .color-swatch.color-3 {
+            background: transparent;
+        }
+    </style>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compound Interest Calculator</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Savings Calculator</title>
 </head>
 
-<body>
+<body class="container mx-auto py-4 px-4">
 
-    <div class="container mt-5">
-        <h1 class="mb-4">Compound Interest Calculator</h1>
-
-        <div class="form-group">
-            <label for="calculationType">Select Calculation Type:</label>
-            <select class="form-control" id="calculationType">
-                <option value="savings">¿Cuánto puedo ahorrar?</option>
-                <option value="time">¿Cuánto tardaré en alcanzar mi objetivo de ahorro?</option>
-                <option value="periodicSaving">¿Cuánto necesito ahorrar cada periodo para alcanzar mi objetivo de
-                    ahorro?</option>
-                <option value="interestRate">¿Qué porcentaje de interés necesito para alcanzar mi objetivo de ahorro?
-                </option>
-            </select>
+    <div class="splash">
+        <div class="inner">
+            <div class="spinner"></div>
         </div>
-
-        <div class="form-group">
-            <label for="principal">Balance Inicial:</label>
-            <input type="number" class="form-control" id="principal" placeholder="Enter initial balance">
-        </div>
-
-        <div class="form-group">
-            <label for="deposit">Depósito Periódico:</label>
-            <input type="number" class="form-control" id="deposit" placeholder="Enter periodic deposit">
-        </div>
-
-        <div class="form-group">
-            <label for="depositFrequency">Frecuencia de Depósito:</label>
-            <select class="form-control" id="depositFrequency">
-                <option value="52">Semanalmente (52/Año)</option>
-                <option value="26">Bi-Semanalmente (26/Año)</option>
-                <option selected="selected" value="12">Mensualmente (12/Año)</option>
-                <option value="1">Anualmente (1/Año)</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="rate">Ratio Interés Anual (%):</label>
-            <input type="number" class="form-control" id="rate" placeholder="Enter annual interest rate">
-        </div>
-
-        <div class="form-group">
-            <label for="time">Tiempo (en años):</label>
-            <input type="number" class="form-control" id="time" placeholder="Enter time in years">
-        </div>
-
-        <div class="form-group">
-            <label for="depositTiming">Momento del Depósito:</label>
-            <select class="form-control" id="depositTiming">
-                <option value="end">Al final de cada periodo</option>
-                <option value="start">Al inicio de cada periodo</option>
-            </select>
-        </div>
-
-        <button type="button" class="btn btn-primary" onclick="calculate()">Calcular</button>
-
-
-
-        <div class="form-group">
-            <label for="result">Resultado:</label>
-            <!-- <canvas id="pieChart" width="400" height="400"></canvas> -->
-            <div id="calculatedSavings" class="alert alert-success mt-3" role="alert">
-                Puedes ahorrar <span id="savingsAmount">0.00 €</span>
-                ahorrando <span id="monthlyDeposit">0.00 €</span> mensual durante <span id="savingYears">0</span> años.
-            </div>
-            <div id="resultTable" class="table-responsive">
-                <!-- Result table will be displayed here -->
-            </div>
-        </div>
-
     </div>
+    <div class="row px-3">
+        <div class="col-xs-12">
+            <div class="rounded-box input-box clearfix" id="calculator-form" action="" accept-charset="UTF-8"
+                data-remote="true" method="post">
+                <div class="form-group">
+                    <label for="solve" class="sr-only">Resolver</label>
+                    <select name="solve" id="solve" class="form-control">
+                        <option selected="selected" value="4">¿Cuánto puedo ahorrar?</option>
+                        <option value="1">¿Cuánto tardaré en alcanzar mi objetivo de ahorro?</option>
+                        <option value="2">¿Cuánto necesito ahorrar cada periodo para alcanzar mi objetivo de ahorro?
+                        </option>
+                        <option value="3">¿Qué porcentaje de interés necesito para alcanzar mi objetivo de ahorro?
+                        </option>
+                    </select>
+                </div>
+                <div id="visible-solve-fields"></div>
+                <div class="form-group">
+                    <input type="submit" name="commit" value="Calcular" class="btn btn-primary float-right"
+                        id="calculate-button" data-disable-with="Calcular" />
+                </div>
+                <input type="hidden" name="locale" id="locale" value="es" autocomplete="off" />
+                <input type="hidden" name="token" id="token" value="10c68135d2" autocomplete="off" />
+            </div>
 
-    <!-- Bootstrap JS and Popper.js -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <div id="hidden-solve-fields" class="hidden">
+                <div id="solve-fv-fields">
+                    <div class="form-group">
+                        <label for="fv-initial-balance" class="control-label">Balance Inicial</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">€</span>
+                            <input type="number" name="initial_balance" id="fv-initial-balance" value="1000.00"
+                                class="form-control" min="0" step="0.01" required="required" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="fv-periodic-deposit" class="control-label">Depósito Periódico</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">€</span>
+                                    <input type="number" name="periodic_deposit" id="fv-periodic-deposit" value="100.00"
+                                        class="form-control" min="0" step="0.01" required="required" />
+                                    <span class="input-group-addon">
+                                        <label for="fv-deposit-frequency" class="sr-only">Frecuencia del Periodo</label>
+                                        <select name="deposit_frequency" id="fv-deposit-frequency">
+                                            <option value="52">Semanalmente (52/Año)</option>
+                                            <option value="26">Bi-Semanalmente (26/Año)</option>
+                                            <option selected="selected" value="12">Mensualmente (12/Año)</option>
+                                            <option value="1">Anualmente (1/Año)</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="fv-deposit-timing" class="control-label">Tiempo</label>
+                                <select name="deposit_timing" id="fv-deposit-timing" class="form-control">
+                                    <option selected="selected" value="1">Haces los depósitos al inicio de cada periodo
+                                    </option>
+                                    <option value="0">Haces los depósitos al final de cada periodo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fv-interest-rate" class="control-label">Ratio Interés Anual</label>
+                        <div class="input-group">
+                            <input type="number" name="interest_rate" id="fv-interest-rate" value="1.000"
+                                class="form-control" min="0" max="99" step="0.001" required="required" />
+                            <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fv-term" class="control-label">Duración</label>
+                        <div class="input-group">
+                            <input type="number" name="term" id="fv-term" value="10" class="form-control" min="1"
+                                max="50" step="1" required="required" />
+                            <span class="input-group-addon">
+                                años
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="solve-nper-fields">
+                    <div class="form-group">
+                        <label for="nper-goal" class="control-label">Objetivo de Ahorro</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">€</span>
+                            <input type="number" name="goal" id="nper-goal" value="10000.00" class="form-control"
+                                min="0" step="0.01" required="required" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nper-initial-balance" class="control-label">Balance Inicial</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">€</span>
+                            <input type="number" name="initial_balance" id="nper-initial-balance" value="1000.00"
+                                class="form-control" min="0" step="0.01" required="required" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="nper-periodic-deposit" class="control-label">Depósito Periódico</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">€</span>
+                                    <input type="number" name="periodic_deposit" id="nper-periodic-deposit"
+                                        value="100.00" class="form-control" min="0" step="0.01" required="required" />
+                                    <span class="input-group-addon">
+                                        <label for="nper-deposit-frequency" class="sr-only">Frecuencia del
+                                            Periodo</label>
+                                        <select name="deposit_frequency" id="nper-deposit-frequency">
+                                            <option value="52">Semanalmente (52/Año)</option>
+                                            <option value="26">Bi-Semanalmente (26/Año)</option>
+                                            <option selected="selected" value="12">Mensualmente (12/Año)</option>
+                                            <option value="1">Anualmente (1/Año)</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="nper-deposit-timing" class="control-label">Tiempo</label>
+                                    <select name="deposit_timing" id="nper-deposit-timing" class="form-control">
+                                        <option selected="selected" value="1">Haces los depósitos al inicio de cada
+                                            periodo</option>
+                                        <option value="0">Haces los depósitos al final de cada periodo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nper-interest-rate" class="control-label">Ratio Interés Anual</label>
+                        <div class="input-group">
+                            <input type="number" name="interest_rate" id="nper-interest-rate" value="1.000"
+                                class="form-control" min="0" max="99" step="0.001" required="required" />
+                            <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="solve-pmt-fields">
+                    <div class="form-group">
+                        <label for="pmt-goal" class="control-label">Objetivo de Ahorro</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">€</span>
+                            <input type="number" name="goal" id="pmt-goal" value="10000.00" class="form-control" min="0"
+                                step="0.01" required="required" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pmt-initial-balance" class="control-label">Balance Inicial</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">€</span>
+                            <input type="number" name="initial_balance" id="pmt-initial-balance" value="1000.00"
+                                class="form-control" min="0" step="0.01" required="required" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="pmt-deposit-frequency" class="control-label">Frecuencia del Periodo</label>
+                                <select name="deposit_frequency" id="pmt-deposit-frequency" class="form-control">
+                                    <option value="52">Semanalmente (52/Año)</option>
+                                    <option value="26">Bi-Semanalmente (26/Año)</option>
+                                    <option selected="selected" value="12">Mensualmente (12/Año)</option>
+                                    <option value="1">Anualmente (1/Año)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="pmt-deposit-timing" class="control-label">Tiempo</label>
+                                <select name="deposit_timing" id="pmt-deposit-timing" class="form-control">
+                                    <option selected="selected" value="1">Haces los depósitos al inicio de cada periodo
+                                    </option>
+                                    <option value="0">Haces los depósitos al final de cada periodo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pmt-interest-rate" class="control-label">Ratio Interés Anual</label>
+                        <div class="input-group">
+                            <input type="number" name="interest_rate" id="pmt-interest-rate" value="1.000"
+                                class="form-control" min="0" max="99" step="0.001" required="required" />
+                            <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pmt-term" class="control-label">Duración</label>
+                        <div class="input-group">
+                            <input type="number" name="term" id="pmt-term" value="10" class="form-control" min="1"
+                                max="50" step="1" required="required" />
+                            <span class="input-group-addon">
+                                años
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="solve-rate-fields">
+                    <div class="form-group">
+                        <label for="rate-goal" class="control-label">Objetivo de Ahorro</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">€</span>
+                            <input type="number" name="goal" id="rate-goal" value="10000.00" class="form-control"
+                                min="0" step="0.01" required="required" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rate-initial-balance" class="control-label">Balance Inicial</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">€</span>
+                            <input type="number" name="initial_balance" id="rate-initial-balance" value="1000.00"
+                                class="form-control" min="0" step="0.01" required="required" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="rate-periodic-deposit" class="control-label">Depósito Periódico</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">€</span>
+                                    <input type="number" name="periodic_deposit" id="rate-periodic-deposit"
+                                        value="100.00" class="form-control" min="0" step="0.01" required="required" />
+                                    <span class="input-group-addon">
+                                        <label for="rate-deposit-frequency" class="sr-only">Frecuencia del
+                                            Periodo</label>
+                                        <select name="deposit_frequency" id="rate-deposit-frequency">
+                                            <option value="52">Semanalmente (52/Año)</option>
+                                            <option value="26">Bi-Semanalmente (26/Año)</option>
+                                            <option selected="selected" value="12">Mensualmente (12/Año)</option>
+                                            <option value="1">Anualmente (1/Año)</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="rate-deposit-timing" class="control-label">Tiempo</label>
+                                <select name="deposit_timing" id="rate-deposit-timing" class="form-control">
+                                    <option selected="selected" value="1">Haces los depósitos al inicio de cada periodo
+                                    </option>
+                                    <option value="0">Haces los depósitos al final de cada periodo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rate-term" class="control-label">Duración</label>
+                        <div class="input-group">
+                            <input type="number" name="term" id="rate-term" value="10" class="form-control" min="1"
+                                max="50" step="1" required="required" />
+                            <span class="input-group-addon">
+                                años
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rounded-box results-box" id="results">
+                <div id="results-test"></div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-7 col-md-8">
+                        <div class="big">
+                            Puedes ahorrar<br>
+                            <span class="big bold blue"><span class="big">13.730,62 €</span></span><br>
+                            ahorro 100,00 € mensual durante 10 años
+                        </div>
+                        <div class="divider v-offset-4"></div>
+                        <div class="row v-offset-3">
+                            <div class="col-xs-8 col-lg-5">
+                                <span class="color-swatch initial-balance"></span><span class="swatch-aligned">Balance
+                                    Inicial:</span>
+                            </div>
+                            <div class="col-xs-4 col-lg-7">
+                                1.000,00 €
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8 col-lg-5">
+                                <span class="color-swatch periodic-deposits"></span><span
+                                    class="swatch-aligned">Depósito
+                                    Periódicos:</span>
+                            </div>
+                            <div class="col-xs-4 col-lg-7">
+                                12.000,00 €
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8 col-lg-5">
+                                <span class="color-swatch interest"></span><span class="swatch-aligned">Interés
+                                    total:</span>
+                            </div>
+                            <div class="col-xs-4 col-lg-7">
+                                730,62 €
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-xs-12 col-sm-5 col-md-4">
+                        <div class="small-pie-chart-container">
+                            <canvas id="value-split-chart"></canvas>
+                        </div>
+                        <div class="v-offset-3 visible-xs"></div>
+                    </div> -->
+                </div>
+                <!-- <div class="bar-chart-container">
+                    <canvas id="growth-chart"></canvas>
+                </div>
+                <div id="amortization"></div> -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Set initial values
+                        document.getElementById('fv-initial-balance').value = '1000.00';
+                        document.getElementById('nper-initial-balance').value = '1000.00';
+                        document.getElementById('pmt-initial-balance').value = '1000.00';
+                        document.getElementById('rate-initial-balance').value = '1000.00';
 
-    <script>
-        function calculate() {
-            var principal = parseFloat(document.getElementById('principal').value);
-            var deposit = parseFloat(document.getElementById('deposit').value);
-            var depositFrequency = parseInt(document.getElementById('depositFrequency').value);
-            var rate = parseFloat(document.getElementById('rate').value) / 100;
-            var time = parseFloat(document.getElementById('time').value);
-            var calculationType = document.getElementById('calculationType').value;
+                        document.getElementById('fv-deposit-frequency').value = '12';
+                        document.getElementById('nper-deposit-frequency').value = '12';
+                        document.getElementById('pmt-deposit-frequency').value = '12';
+                        document.getElementById('rate-deposit-frequency').value = '12';
 
-            // Convert annual rate to effective rate based on deposit frequency
-            var effectiveRate = (1 + rate / depositFrequency) ** depositFrequency - 1;
+                        document.getElementById('fv-deposit-timing').value = '1';
+                        document.getElementById('nper-deposit-timing').value = '1';
+                        document.getElementById('pmt-deposit-timing').value = '1';
+                        document.getElementById('rate-deposit-timing').value = '1';
 
-            var resultTable = document.getElementById('resultTable');
-            var pieChartCanvas = document.getElementById('pieChart');
+                        if (!document.getElementById('solve-rate-fields').style.display) {
+                            document.getElementById('fv-interest-rate').value = '1.000';
+                            document.getElementById('nper-interest-rate').value = '1.000';
+                            document.getElementById('pmt-interest-rate').value = '1.000';
+                        }
 
-            var result = [];
+                        if (!document.getElementById('solve-pmt-fields').style.display) {
+                            document.getElementById('fv-periodic-deposit').value = '100.00';
+                            document.getElementById('nper-periodic-deposit').value = '100.00';
+                            document.getElementById('rate-periodic-deposit').value = '100.00';
+                        }
 
-            switch (calculationType) {
-                case 'savings':
-                    result = calculateSavings(principal, effectiveRate, time);
-                    break;
-                case 'time':
-                    result = calculateTime(principal, deposit, depositFrequency, effectiveRate);
-                    break;
-                case 'periodicSaving':
-                    result = calculatePeriodicSaving(principal, deposit, depositFrequency, effectiveRate, time);
-                    break;
-                case 'interestRate':
-                    result = calculateInterestRate(principal, deposit, depositFrequency, effectiveRate, time);
-                    break;
-                default:
-                    resultTable.innerHTML = "Invalid calculation type";
-                    return;
-            }
-            var savingsAmount = result[result.length - 1].balance;
-            document.getElementById('savingsAmount').innerText = savingsAmount + ' €';
-            document.getElementById('monthlyDeposit').innerText = deposit.toFixed(2) + ' €';
-            document.getElementById('savingYears').innerText = time;
-            // Display the result in a table
-            // Display the result in a table
-            var tableContent = '<table class="table table-bordered"><thead><tr><th>Año</th><th>Depósito Periódicos</th><th>Depósitos totales</th><th>Interés total</th><th>Balance</th></tr></thead><tbody>';
+                        if (!document.getElementById('solve-nper-fields').style.display) {
+                            document.getElementById('fv-term').value = '10';
+                            document.getElementById('pmt-term').value = '10';
+                            document.getElementById('rate-term').value = '10';
+                        }
 
-            for (var i = 0; i < result.slice(0, time).length; i++) {
-                tableContent += '<tr>';
-                tableContent += '<td>' + (i + 1) + '</td>'; // Display weeks
-                tableContent += '<td>' + result[i].deposits + '</td>';
-                tableContent += '<td>' + result[i].totalDeposits + '</td>';
-                tableContent += '<td>' + result[i].totalInterest + '</td>';
-                tableContent += '<td>' + result[i].balance + '</td>';
-                tableContent += '</tr>';
-            }
+                        if (!document.getElementById('solve-fv-fields').style.display) {
+                            document.getElementById('nper-goal').value = '10000.00';
+                            document.getElementById('pmt-goal').value = '10000.00';
+                            document.getElementById('rate-goal').value = '10000.00';
+                        }
 
-            tableContent += '</tbody></table>';
+                        // Check if the value-split-chart is visible
+                        if (document.getElementById('value-split-chart').style.display !== 'none') {
+                            var pc_initial_balance_color = typeof window.pie_chart_initial_balance_color !== 'undefined' ? window.pie_chart_initial_balance_color : '#428bca';
+                            var pc_periodic_deposits_color = typeof window.pie_chart_periodic_deposits_color !== 'undefined' ? window.pie_chart_periodic_deposits_color : '#9ECAE1';
+                            var pc_interest_color = typeof window.pie_chart_interest_color !== 'undefined' ? window.pie_chart_interest_color : '#979797';
+                            var data = {
+                                datasets: [{
+                                    data: [
+                                        1000.0,
+                                        12000.0,
+                                        730.62
+                                    ],
+                                    backgroundColor: [
+                                        pc_initial_balance_color,
+                                        pc_periodic_deposits_color,
+                                        pc_interest_color
+                                    ]
+                                }],
+                                labels: [
+                                    'Balance Inicial',
+                                    'Depósito Periódicos',
+                                    'Interés'
+                                ]
+                            };
+                            draw_pie_chart(data);
+                        }
 
+                        // Amortization data
+                        var amortizationData = [{
+                            "year": 1,
+                            "initial_balance": 1000.0,
+                            "periodic_deposits": 1200.0,
+                            "total_deposits": 2200.0,
+                            "total_interest": 16.57,
+                            "balance": 2216.57
+                        },
+                            // Add more data here...
+                        ];
 
-            resultTable.innerHTML = tableContent;
+                        // Check if the growth-chart is visible
+                        if (document.getElementById('growth-chart').style.display !== 'none') {
+                            draw_bar_chart(amortizationData);
 
-            // Create a pie chart
-            var pieChart = new Chart(pieChartCanvas, {
-                type: 'pie',
-                data: {
-                    labels: ['Balance Inicial', 'Depósito Periódicos', 'Interés total'],
-                    datasets: [{
-                        data: [principal, deposit, result.reduce((total, item) => total + item.totalInterest, 0)],
-                        backgroundColor: ['rgb(255, 99, 132)', 'rgb(75, 192, 192)', 'rgb(255, 205, 86)'],
-                    }],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    title: {
-                        display: true,
-                        text: 'Distribution of Funds',
-                    },
-                },
-            });
-        }
-
-        function calculateSavings(principal, effectiveRate, time) {
-            var result = [];
-            var balance = principal;
-            var totalDeposits = 0;
-
-            // Assuming weekly frequency
-            var periodicDeposit = principal; // Initialize periodic deposit to the initial deposit value
-
-            for (var i = 1; i <= time * 52; i++) {
-                var interest = balance * effectiveRate;
-                balance = balance + interest;
-
-                result.push({
-                    year: Math.ceil(i / 52), // Adjusting for weekly frequency
-                    deposits: (i === 0) ? (principal + interest).toFixed(2) : periodicDeposit.toFixed(2),
-                    totalDeposits: totalDeposits.toFixed(2),
-                    totalInterest: interest.toFixed(2),
-                    balance: balance.toFixed(2)
-                });
-
-                totalDeposits += periodicDeposit; // Accumulate the periodic deposit
-            }
-
-            // Trim the result array to include only the specified number of years
-            result = result.slice(0, time * 52);
-
-            return result;
-        }
-
-
-
-
-        function calculateTime(principal, deposit, depositFrequency, effectiveRate) {
-            var result = [];
-            var balance = principal;
-            var totalDeposits = 0;
-            var depositTiming = document.getElementById('depositTiming').value;
-
-            for (var i = 1; balance > 0; i++) {
-                var interest = balance * effectiveRate;
-
-                if (depositTiming === 'end') {
-                    balance = balance + interest + (deposit * depositFrequency);
-                    totalDeposits += deposit * depositFrequency;
-                } else if (depositTiming === 'start') {
-                    totalDeposits += deposit * depositFrequency;
-                    balance = balance + interest + (deposit * depositFrequency);
-                }
-
-                result.push({
-                    year: i,
-                    deposits: (deposit * depositFrequency).toFixed(2),
-                    totalDeposits: totalDeposits.toFixed(2),
-                    totalInterest: interest.toFixed(2),
-                    balance: balance.toFixed(2)
-                });
-            }
-
-            return result;
-        }
-
-
-        function calculatePeriodicSaving(principal, deposit, depositFrequency, effectiveRate, time) {
-            var result = [];
-            var balance = principal;
-            var totalDeposits = 0;
-
-            for (var i = 1; i <= time; i++) {
-                var interest = balance * effectiveRate;
-                balance = balance + interest + (deposit * depositFrequency);
-                totalDeposits += deposit * depositFrequency;
-
-                result.push({
-                    year: i,
-                    deposits: (deposit * depositFrequency).toFixed(2),
-                    totalDeposits: totalDeposits.toFixed(2),
-                    totalInterest: interest.toFixed(2),
-                    balance: balance.toFixed(2)
-                });
-            }
-
-            return result;
-        }
-
-
-        function calculateInterestRate(principal, deposit, depositFrequency, effectiveRate, time) {
-            var result = [];
-            var balance = principal;
-            var totalDeposits = 0;
-
-            for (var rate = effectiveRate; rate <= 1; rate += 0.01) {
-                balance = principal;
-                totalDeposits = 0;
-
-                for (var i = 1; i <= time; i++) {
-                    var interest = balance * rate;
-                    balance = balance + interest + (deposit * depositFrequency);
-                    totalDeposits += deposit * depositFrequency;
-                }
-
-                if (balance >= 0) {
-                    result.push({
-                        rate: (rate * 100).toFixed(2),
-                        deposits: (deposit * depositFrequency).toFixed(2),
-                        totalDeposits: totalDeposits.toFixed(2),
-                        totalInterest: (balance - principal - totalDeposits).toFixed(2),
-                        balance: balance.toFixed(2)
+                            draw_amortization_table('amortization', [{
+                                'title': 'Año',
+                                'data_key': 'year'
+                            },
+                            {
+                                'title': 'Depósito Periódicos',
+                                'data_key': 'periodic_deposits',
+                                'format': 1
+                            },
+                            {
+                                'title': 'Depósitos totales',
+                                'data_key': 'total_deposits',
+                                'format': 1
+                            },
+                            {
+                                'title': 'Interés total',
+                                'data_key': 'total_interest',
+                                'format': 1
+                            },
+                            {
+                                'title': 'Balance',
+                                'data_key': 'balance',
+                                'format': 1
+                            }
+                            ], amortizationData, {});
+                        }
                     });
+                </script>
+
+            </div>
+
+
+            <script nonce="">
+                //<![CDATA[
+
+                window.I18n = {
+                    'number': {
+                        'currency': {
+                            'format': {
+                                'unit': '€',
+                                'delimiter': '.',
+                                'separator': ',',
+                                'format': '%n %u'
+                            }
+                        }
+                    },
+                    initial_balance: 'Balance Inicial',
+                    total_interest: 'Interés total',
+                    periodic_deposits: 'Depósito Periódicos',
+                    savings_breakdown: 'Desglose de ahorros'
+                };
+                window.locale = 'es';
+
+                window.solve_options = {
+                    solve_fv: 4,
+                    solve_nper: 1,
+                    solve_pmt: 2,
+                    solve_rate: 3,
+                }
+
+                window.deposit_frequencies = {
+                    weekly: 52,
+                    bi_weekly: 26,
+                    monthly: 12,
+                    annually: 1,
+                }
+
+
+                //]]>
+            </script>
+
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add event listener to the calculate button
+            document.getElementById('calculate-button').addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Get the selected option value
+                var selectedOption = document.getElementById('solve').value;
+
+                // Perform calculations based on the selected option
+                switch (selectedOption) {
+                    case '1':
+                        calculateTimeToGoal();
+                        break;
+                    case '2':
+                        calculatePeriodicDeposit();
+                        break;
+                    case '3':
+                        calculateRequiredInterestRate();
+                        break;
+                    case '4':
+                    default:
+                        calculateTotalSavings();
+                        break;
+                }
+            });
+        });
+        function calculateTotalSavings() {
+            // Retrieve input values
+            var initialBalance = parseFloat(document.getElementById('fv-initial-balance').value);
+            var periodicDeposit = parseFloat(document.getElementById('fv-periodic-deposit').value);
+            var depositFrequency = parseFloat(document.getElementById('fv-deposit-frequency').value);
+            var depositTiming = parseFloat(document.getElementById('fv-deposit-timing').value);
+            var interestRate = parseFloat(document.getElementById('fv-interest-rate').value) / 100; // Convert percentage to decimal
+            var term = parseFloat(document.getElementById('fv-term').value);
+
+            // Perform calculations
+            var totalSavings = initialBalance;
+            var totalPeriods = term * depositFrequency;
+
+            for (var i = 0; i < totalPeriods; i++) {
+                totalSavings *= (1 + interestRate / depositFrequency);
+                if (depositTiming == 1) {
+                    if ((i + 1) % (depositFrequency / 12) == 0) {
+                        totalSavings += periodicDeposit;
+                    }
+                } else {
+                    totalSavings += periodicDeposit;
                 }
             }
 
-            return result;
+            // Display results
+            document.querySelector('.big').innerHTML = 'Puedes ahorrar<br><span class="big bold blue"><span class="big">' + totalSavings.toFixed(2) + ' €</span></span><br>ahorro ' + periodicDeposit.toFixed(2) + ' € mensual durante ' + term + ' años';
+            document.querySelector('.col-xs-4.col-lg-7:nth-of-type(1)').textContent = initialBalance.toFixed(2) + ' €';
+            document.querySelector('.col-xs-4.col-lg-7:nth-of-type(2)').textContent = (periodicDeposit * depositFrequency * term).toFixed(2) + ' €';
+            document.querySelector('.col-xs-4.col-lg-7:nth-of-type(3)').textContent = (totalSavings - initialBalance - (periodicDeposit * depositFrequency * term)).toFixed(2) + ' €';
+        }
+
+
+        function calculateTimeToGoal() {
+            // Retrieve input values
+            var goal = parseFloat(document.getElementById('nper-goal').value);
+            var initialBalance = parseFloat(document.getElementById('nper-initial-balance').value);
+            var periodicDeposit = parseFloat(document.getElementById('nper-periodic-deposit').value);
+            var depositFrequency = parseFloat(document.getElementById('nper-deposit-frequency').value);
+            var depositTiming = parseFloat(document.getElementById('nper-deposit-timing').value);
+            var interestRate = parseFloat(document.getElementById('nper-interest-rate').value) / 100; // Convert percentage to decimal
+
+            // Perform calculations
+            var timeToGoal = 0;
+            var currentBalance = initialBalance;
+            while (currentBalance < goal) {
+                currentBalance *= (1 + interestRate / depositFrequency);
+                if (depositTiming == 1) {
+                    currentBalance += periodicDeposit;
+                }
+                timeToGoal++;
+            }
+
+            // Display results or update UI
+            document.querySelector('.big').innerHTML = 'Puedes ahorrar<br><span class="big bold blue"><span class="big">' + goal.toFixed(2) + ' €</span></span><br>ahorrando ' + periodicDeposit.toFixed(2) + ' € mensualmente';
+            document.querySelector('.col-xs-4.col-lg-7').textContent = timeToGoal + ' meses';
+        }
+
+
+        function calculatePeriodicDeposit() {
+            // Retrieve input values
+            var goal = parseFloat(document.getElementById('pmt-goal').value);
+            var initialBalance = parseFloat(document.getElementById('pmt-initial-balance').value);
+            var depositFrequency = parseFloat(document.getElementById('pmt-deposit-frequency').value);
+            var depositTiming = parseFloat(document.getElementById('pmt-deposit-timing').value);
+            var interestRate = parseFloat(document.getElementById('pmt-interest-rate').value) / 100; // Convert percentage to decimal
+            var term = parseFloat(document.getElementById('pmt-term').value);
+
+            // Perform calculations
+            var n = term * depositFrequency; // Total number of deposits
+            var periodicDeposit = (goal - initialBalance * Math.pow((1 + interestRate / depositFrequency), n)) /
+                ((Math.pow((1 + interestRate / depositFrequency), n) - 1) / (interestRate / depositFrequency));
+            periodicDeposit = Math.ceil(periodicDeposit * 100) / 100; // Round to two decimal places
+
+            // Display results or update UI
+            document.querySelector('.big').innerHTML = 'Para alcanzar tu objetivo de ahorro de <br><span class="big bold blue"><span class="big">' + goal.toFixed(2) + ' €</span></span><br>necesitarás ahorrar ' + periodicDeposit.toFixed(2) + ' € mensualmente durante ' + term + ' años.';
+        }
+
+
+        function calculateRequiredInterestRate() {
+            // Retrieve input values
+            var goal = parseFloat(document.getElementById('rate-goal').value);
+            var initialBalance = parseFloat(document.getElementById('rate-initial-balance').value);
+            var periodicDeposit = parseFloat(document.getElementById('rate-periodic-deposit').value);
+            var depositFrequency = parseFloat(document.getElementById('rate-deposit-frequency').value);
+            var depositTiming = parseFloat(document.getElementById('rate-deposit-timing').value);
+            var term = parseFloat(document.getElementById('rate-term').value);
+
+            // Perform calculations
+            var n = term * depositFrequency; // Total number of deposits
+            var interestRate = 0;
+            var epsilon = 0.01; // Set a small value to control the precision of the calculation
+            var upperBound = 100; // Set an upper bound for the interest rate
+            var lowerBound = 0; // Set a lower bound for the interest rate
+
+            // Use binary search to find the interest rate
+            while (lowerBound <= upperBound) {
+                var midRate = (upperBound + lowerBound) / 2;
+                var futureValue = initialBalance * Math.pow((1 + midRate / depositFrequency), n) +
+                    periodicDeposit * ((Math.pow((1 + midRate / depositFrequency), n) - 1) / (midRate / depositFrequency));
+                if (futureValue > goal + epsilon) {
+                    upperBound = midRate - epsilon;
+                } else if (futureValue < goal - epsilon) {
+                    lowerBound = midRate + epsilon;
+                } else {
+                    interestRate = midRate;
+                    break;
+                }
+            }
+
+            // Display results or update UI
+            document.querySelector('.big').innerHTML = 'Para alcanzar tu objetivo de ahorro de <br><span class="big bold blue"><span class="big">' + goal.toFixed(2) + ' €</span></span><br>necesitarás un interés anual del ' + (interestRate * 100).toFixed(2) + '% durante ' + term + ' años.';
         }
 
 
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to show/hide fields based on the selected option
+            function toggleFields() {
+                var selectedOption = document.getElementById('solve').value;
+                var solveFields = ['solve-fv-fields', 'solve-nper-fields', 'solve-pmt-fields', 'solve-rate-fields'];
+
+                // Hide all fields
+                solveFields.forEach(function (field) {
+                    document.getElementById(field).style.display = 'none';
+                });
+
+                // Show the selected field
+                if (selectedOption === '4') {
+                    document.getElementById('solve-fv-fields').style.display = 'block';
+                } else if (selectedOption === '1') {
+                    document.getElementById('solve-nper-fields').style.display = 'block';
+                } else if (selectedOption === '2') {
+                    document.getElementById('solve-pmt-fields').style.display = 'block';
+                } else if (selectedOption === '3') {
+                    document.getElementById('solve-rate-fields').style.display = 'block';
+                }
+            }
+
+            // Attach event listener to the 'solve' select element
+            document.getElementById('solve').addEventListener('change', toggleFields);
+
+            // Call the toggleFields function on page load
+            toggleFields();
+        });
+    </script>
+    <!-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('calculate-button').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Perform calculations and draw charts here
+            drawCharts();
+        });
+    });
+
+    function drawCharts() {
+        // Sample data for pie chart
+        var pieChartData = {
+            datasets: [{
+                data: [
+                    1000.0,
+                    12000.0,
+                    730.62
+                ],
+                backgroundColor: [
+                    '#428bca', // pc_initial_balance_color
+                    '#9ECAE1', // pc_periodic_deposits_color
+                    '#979797' // pc_interest_color
+                ]
+            }],
+            labels: [
+                'Balance Inicial',
+                'Depósito Periódicos',
+                'Interés'
+            ]
+        };
+
+        // Sample data for bar chart
+        var amortizationData = [
+            {
+                "year": 1,
+                "initial_balance": 1000.0,
+                "periodic_deposits": 1200.0,
+                "total_deposits": 2200.0,
+                "total_interest": 16.57,
+                "balance": 2216.57
+            },
+            // Other data points...
+        ];
+
+        // Draw pie chart
+        var pieChartCanvas = document.createElement('canvas');
+        pieChartCanvas.setAttribute('id', 'pie-chart');
+        document.getElementById('result').appendChild(pieChartCanvas);
+        var pieChartCtx = pieChartCanvas.getContext('2d');
+        new Chart(pieChartCtx, {
+            type: 'pie',
+            data: pieChartData
+        });
+
+        // Draw bar chart
+        var barChartCanvas = document.createElement('canvas');
+        barChartCanvas.setAttribute('id', 'bar-chart');
+        document.getElementById('result').appendChild(barChartCanvas);
+        var barChartCtx = barChartCanvas.getContext('2d');
+        new Chart(barChartCtx, {
+            type: 'bar',
+            data: {
+                labels: amortizationData.map(data => data.year),
+                datasets: [{
+                    label: 'Balance',
+                    data: amortizationData.map(data => data.balance),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script> -->
 
 </body>
 

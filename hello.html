@@ -600,17 +600,17 @@
                     // Function to show/hide the relevant section based on the selected option
                     function showHideFields() {
                         var selectedOption = $("#solve").val();
-                        
+
                         // Hide all sections
                         $("#solve-fv-fields, #solve-nper-fields, #solve-pmt-fields, #solve-rate-fields").hide();
-            
+
                         // Show the selected section
                         $("#" + selectedOption + "-fields").show();
                     }
-            
+
                     // Initial call to hide/show fields based on the default selected option
                     showHideFields();
-            
+
                     // Add an event listener to the select element
                     $("#solve").change(function () {
                         showHideFields();
